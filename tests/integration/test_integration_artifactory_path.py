@@ -24,7 +24,7 @@ def path(artifactory_server, artifactory_auth):
 
     def f(uri):
         return artifactory.ArtifactoryPath(
-            artifactory_server + uri, auth=artifactory_auth
+            artifactory_server + uri, token=artifactory_auth
         )
 
     return f

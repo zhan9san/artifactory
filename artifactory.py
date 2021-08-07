@@ -42,6 +42,7 @@ import requests
 
 from dohq_artifactory.admin import Group
 from dohq_artifactory.admin import PermissionTarget
+from dohq_artifactory.admin import Project
 from dohq_artifactory.admin import Repository
 from dohq_artifactory.admin import RepositoryLocal
 from dohq_artifactory.admin import RepositoryRemote
@@ -378,12 +379,8 @@ class nullcontext:
 def quote_url(url):
     parsed_url = urllib3.util.parse_url(url)
     if parsed_url.port:
-        quoted_path = requests.utils.quote(
-            url.rpartition(f"{parsed_url.host}:{parsed_url.port}")[2]
-        )
-        quoted_url = (
-            f"{parsed_url.scheme}://{parsed_url.host}:{parsed_url.port}{quoted_path}"
-        )
+        quoted_path = requests.utils.quote(url.rpartition(f"{parsed_url.host}:{parsed_url.port}")[2])
+        quoted_url = f"{parsed_url.scheme}://{parsed_url.host}:{parsed_url.port}{quoted_path}"
     else:
         quoted_path = requests.utils.quote(url.rpartition(parsed_url.host)[2])
         quoted_url = "{}://{}{}".format(parsed_url.scheme, parsed_url.host, quoted_path)
@@ -1264,8 +1261,8 @@ class ArtifactoryPath(pathlib.Path, PureArtifactoryPath):
             logging.debug("Use XJFrogApiAuth apikey")
             obj.auth = XJFrogArtApiAuth(apikey=apikey)
         elif token:
-            logging.debug("Use XJFrogArtBearerAuth token")
-            obj.auth = XJFrogArtBearerAuth(token=token)
+            logging.debug("Use XJFrogApiAuth token")
+            obj.auth = XJFrogArtApiAuth(token=token)
         else:
             auth = kwargs.get("auth")
             obj.auth = auth if auth_type is None else auth_type(*auth)
@@ -2005,6 +2002,12 @@ class ArtifactoryPath(pathlib.Path, PureArtifactoryPath):
 
     def find_permission_target(self, name):
         obj = PermissionTarget(self, name)
+        if obj.read():
+            return obj
+        return None
+
+    def find_project(self, project_key):
+        obj = Project(self, project_key)
         if obj.read():
             return obj
         return None
