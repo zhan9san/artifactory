@@ -108,9 +108,6 @@ class TestGroup:
 
         del test_group
         test_group = artifactory.find_group(name)
-        assert test_group is not None
-
-        test_group.read()
         assert test_group.users == users
 
         # DELETE
@@ -205,7 +202,9 @@ class TestProject:
             test_project.delete()
 
         test_project = Project(
-            artifactory=artifactory, project_key=project_key, display_name=display_name
+            artifactory=artifactory,
+            project_key=project_key,
+            display_name=display_name
         )
 
         # CREATE
@@ -227,7 +226,9 @@ class TestProject:
             test_project.delete()
 
         test_project = Project(
-            artifactory=artifactory, project_key=project_key, display_name=display_name
+            artifactory=artifactory,
+            project_key=project_key,
+            display_name=display_name
         )
 
         # CREATE

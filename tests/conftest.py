@@ -107,9 +107,7 @@ def integration_artifactory_path_repo(artifactory):
         repo_.create()
 
     # Remove all file from repo
-    repo_path = ArtifactoryPath(
-        str(artifactory) + "/" + name, token=artifactory.auth.token
-    )
+    repo_path = ArtifactoryPath(str(artifactory) + "/" + name, token=artifactory.auth.token)
     for path_ in repo_path.glob("*"):
         path_.unlink()
     yield repo_
@@ -136,10 +134,7 @@ def user1(artifactory):
     if user is not None:
         user.delete()
     user = User(
-        artifactory=artifactory,
-        name=name,
-        email=f"{name}@example.com",
-        password="Pa55w@rd",
+        artifactory=artifactory, name=name, email=f"{name}@example.com", password="Pa55w@rd"
     )
     user.create()
     yield user
@@ -153,10 +148,7 @@ def user2(artifactory):
     if user is not None:
         user.delete()
     user = User(
-        artifactory=artifactory,
-        name=name,
-        email=f"{name}@example.com",
-        password="Pa55w@rd",
+        artifactory=artifactory, name=name, email=f"{name}@example.com", password="Pa55w@rd"
     )
     user.create()
     yield user
