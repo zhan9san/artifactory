@@ -108,6 +108,9 @@ class TestGroup:
 
         del test_group
         test_group = artifactory.find_group(name)
+        assert test_group is not None
+
+        test_group.read()
         assert test_group.users == users
 
         # DELETE
