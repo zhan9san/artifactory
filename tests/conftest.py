@@ -136,7 +136,10 @@ def user1(artifactory):
     if user is not None:
         user.delete()
     user = User(
-        artifactory=artifactory, name=name, email=f"{name}@example.com", password="Pa55w@rd"
+        artifactory=artifactory,
+        name=name,
+        email=f"{name}@example.com",
+        password="Pa55w@rd",
     )
     user.create()
     yield user
@@ -150,7 +153,10 @@ def user2(artifactory):
     if user is not None:
         user.delete()
     user = User(
-        artifactory=artifactory, name=name, email=f"{name}@example.com", password="Pa55w@rd"
+        artifactory=artifactory,
+        name=name,
+        email=f"{name}@example.com",
+        password="Pa55w@rd",
     )
     user.create()
     yield user
