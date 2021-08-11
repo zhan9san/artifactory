@@ -83,10 +83,10 @@ class AdminObject(object):
         self._session = self._artifactory.session
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.__getattribute__(self.resource_name)}>"
+        return f"<{self.__class__.__name__} {getattr(self, self.resource_name)}>"
 
     def __str__(self):
-        return self.__getattribute__(self.resource_name)
+        return getattr(self, self.resource_name)
 
     def _create_json(self):
         """
@@ -100,7 +100,7 @@ class AdminObject(object):
         Create object
         :return: None
         """
-        logging.debug(f"Create {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]")
+        logging.debug(f"Create {self.__class__.__name__} [{getattr(self, self.resource_name)}]")
         self._create_and_update(self._session.put)
 
     def _create_and_update(self, method):
@@ -113,7 +113,7 @@ class AdminObject(object):
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
-            key=self.__getattribute__(self.__getattribute__('resource_name'))
+            key=getattr(self, self.resource_name)
         )
         r = method(
             request_url,
@@ -140,11 +140,11 @@ class AdminObject(object):
         True if object exist,
         False else
         """
-        logging.debug(f"Read {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]")
+        logging.debug(f"Read {self.__class__.__name__} [{getattr(self, self.resource_name)}]")
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
-            key=self.__getattribute__(self.resource_name)
+            key=getattr(self, self.resource_name)
         )
         r = self._session.get(
             request_url,
@@ -154,11 +154,11 @@ class AdminObject(object):
         r = self._session.get(request_url, auth=self._auth, params=self.params)
         if 404 == r.status_code or 400 == r.status_code:
             logging.debug(
-                f"{self.__class__.__name__} [{self.__getattribute__(self.resource_name)}] does not exist"
+                f"{self.__class__.__name__} [{getattr(self, self.resource_name)}] does not exist"
             )
             return False
         else:
-            logging.debug(f"{self.__class__.__name__} [{self.__getattribute__(self.resource_name)}] exist")
+            logging.debug(f"{self.__class__.__name__} [{getattr(self, self.resource_name)}] exist")
             raise_errors(r)
             response = r.json()
             self.raw = response
@@ -200,11 +200,11 @@ class AdminObject(object):
         Remove object
         :return: None
         """
-        logging.debug(f"Remove {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]")
+        logging.debug(f"Remove {self.__class__.__name__} [{getattr(self, self.resource_name)}]")
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
-            key=self.__getattribute__(self.resource_name)
+            key=getattr(self, self.resource_name)
         )
         r = self._session.delete(
             request_url,
@@ -1335,7 +1335,7 @@ class Project(AdminObject):
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
-            key=self.__getattribute__(self.resource_name)
+            key=getattr(self, self.resource_name)
         )
         r = self._session.put(
             request_url,
