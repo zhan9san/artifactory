@@ -83,13 +83,7 @@ class AdminObject(object):
         self._session = self._artifactory.session
 
     def __repr__(self):
-<<<<<<< HEAD
-        return (
-            f"<{self.__class__.__name__} {self.__getattribute__(self.resource_name)}>"
-        )
-=======
         return f"<{self.__class__.__name__} {self.__getattribute__(self.resource_name)}>"
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
 
     def __str__(self):
         return self.__getattribute__(self.resource_name)
@@ -106,13 +100,7 @@ class AdminObject(object):
         Create object
         :return: None
         """
-<<<<<<< HEAD
-        logging.debug(
-            f"Create {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]"
-        )
-=======
         logging.debug(f"Create {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]")
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         self._create_and_update(self._session.put)
 
     def _create_and_update(self, method):
@@ -125,11 +113,7 @@ class AdminObject(object):
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
-<<<<<<< HEAD
-            key=self.__getattribute__(self.__getattribute__("resource_name")),
-=======
             key=self.__getattribute__(self.__getattribute__('resource_name'))
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         )
         r = method(
             request_url,
@@ -156,15 +140,6 @@ class AdminObject(object):
         True if object exist,
         False else
         """
-<<<<<<< HEAD
-        logging.debug(
-            f"Read {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]"
-        )
-        request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
-            prefix_uri=self.prefix_uri,
-            uri=self._uri,
-            key=self.__getattribute__(self.resource_name),
-=======
         logging.debug(f"Read {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]")
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
@@ -175,7 +150,6 @@ class AdminObject(object):
             request_url,
             auth=self._auth,
             params=self.params
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         )
         r = self._session.get(request_url, auth=self._auth, params=self.params)
         if 404 == r.status_code or 400 == r.status_code:
@@ -184,13 +158,7 @@ class AdminObject(object):
             )
             return False
         else:
-<<<<<<< HEAD
-            logging.debug(
-                f"{self.__class__.__name__} [{self.__getattribute__(self.resource_name)}] exist"
-            )
-=======
             logging.debug(f"{self.__class__.__name__} [{self.__getattribute__(self.resource_name)}] exist")
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
             raise_errors(r)
             response = r.json()
             self.raw = response
@@ -232,21 +200,11 @@ class AdminObject(object):
         Remove object
         :return: None
         """
-<<<<<<< HEAD
-        logging.debug(
-            f"Remove {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]"
-        )
-        request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
-            prefix_uri=self.prefix_uri,
-            uri=self._uri,
-            key=self.__getattribute__(self.resource_name),
-=======
         logging.debug(f"Remove {self.__class__.__name__} [{self.__getattribute__(self.resource_name)}]")
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
             key=self.__getattribute__(self.resource_name)
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         )
         r = self._session.delete(
             request_url,
@@ -508,11 +466,7 @@ class Group(AdminObject):
             "realmAttributes": self.realm_attributes,
             "userNames": self.users,
             "watchManager": self.watch_manager,
-<<<<<<< HEAD
-            "policyManager": self.policy_manager,
-=======
             "policyManager": self.policy_manager
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         }
         return data_json
 
@@ -1306,13 +1260,9 @@ class Token(AdminObject):
         revoke (calling it deletion to be consistent with other classes) a token
         """
         logging.debug("Delete {x.__class__.__name__} [{x.name}]".format(x=self))
-<<<<<<< HEAD
-        request_url = self.base_url + "/api/{uri}".format(uri=self._uri + "/revoke")
-=======
         request_url = self.base_url + "/api/{uri}".format(
             uri=self._uri + "/revoke"
         )
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         payload = self._prepare_deletion()
 
         r = self._session.post(request_url, data=payload, auth=self._auth)
@@ -1338,17 +1288,10 @@ class Project(AdminObject):
         allow_ignore_rules=True,
         storage_quota_bytes=-1,
         soft_limit=False,
-<<<<<<< HEAD
-        storage_quota_email_notification=True,
-    ):
-        self._artifactory = artifactory.top
-        self.base_url = self._artifactory.drive.rpartition("/artifactory")[0]
-=======
         storage_quota_email_notification=True
     ):
         self._artifactory = artifactory.top
         self.base_url = self._artifactory.drive.rpartition('/artifactory')[0]
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         self._auth = self._artifactory.auth
         self._session = self._artifactory.session
 
@@ -1392,11 +1335,7 @@ class Project(AdminObject):
         request_url = self.base_url + "/{prefix_uri}/{uri}/{key}".format(
             prefix_uri=self.prefix_uri,
             uri=self._uri,
-<<<<<<< HEAD
-            key=self.__getattribute__(self.resource_name),
-=======
             key=self.__getattribute__(self.resource_name)
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         )
         r = self._session.put(
             request_url,
@@ -1418,15 +1357,9 @@ class Project(AdminObject):
                 "manage_resources": self.manage_resources,
                 "manage_security_assets": self.manage_security_assets,
                 "index_resources": self.index_resources,
-<<<<<<< HEAD
-                "allow_ignore_rules": self.allow_ignore_rules,
-            },
-            "storage_quota_bytes": self.storage_quota_bytes,
-=======
                 "allow_ignore_rules": self.allow_ignore_rules
             },
             "storage_quota_bytes": self.storage_quota_bytes
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
         }
         return data_json
 
@@ -1436,24 +1369,9 @@ class Project(AdminObject):
         self.description = response.get("description")
         self.manage_members = response.get("admin_privileges").get("manage_members")
         self.manage_resources = response.get("admin_privileges").get("manage_resources")
-<<<<<<< HEAD
-        self.manage_security_assets = response.get("admin_privileges").get(
-            "manage_security_assets"
-        )
-        self.index_resources = response.get("admin_privileges").get("index_resources")
-        self.allow_ignore_rules = response.get("admin_privileges").get(
-            "allow_ignore_rules"
-        )
-        self.storage_quota_bytes = response.get("storage_quota_bytes")
-        self.soft_limit = response.get("soft_limit")
-        self.storage_quota_email_notification = response.get(
-            "storage_quota_email_notification"
-        )
-=======
         self.manage_security_assets = response.get("admin_privileges").get("manage_security_assets")
         self.index_resources = response.get("admin_privileges").get("index_resources")
         self.allow_ignore_rules = response.get("admin_privileges").get("allow_ignore_rules")
         self.storage_quota_bytes = response.get("storage_quota_bytes")
         self.soft_limit = response.get("soft_limit")
         self.storage_quota_email_notification = response.get("storage_quota_email_notification")
->>>>>>> 4545cd8 (Fix #259 and #257 Support Artifactory Project)
