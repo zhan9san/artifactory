@@ -1,7 +1,7 @@
 # Python interface library for Jfrog Artifactory #
 
 
-[![docs](https://img.shields.io/readthedocs/pip.svg)](https://devopshq.github.io/artifactory/)[![dohq-artifactory build Status](https://travis-ci.org/devopshq/artifactory.svg?branch=master)](https://travis-ci.org/devopshq/artifactory) [![dohq-artifactory code quality](https://api.codacy.com/project/badge/Grade/ce32469db9d948bcb56d50532e0c0005)](https://www.codacy.com/app/tim55667757/artifactory/dashboard) [![dohq-artifactory on PyPI](https://img.shields.io/pypi/v/dohq-artifactory.svg)](https://pypi.python.org/pypi/dohq-artifactory) [![dohq-artifactory license](https://img.shields.io/pypi/l/dohq-artifactory.svg)](https://github.com/devopshq/artifactory/blob/master/LICENSE)
+[![docs](https://img.shields.io/readthedocs/pip.svg)](https://devopshq.github.io/artifactory/)[![dohq-artifactory build Status](https://travis-ci.com/devopshq/artifactory.svg?branch=master)](https://travis-ci.com/devopshq/artifactory) [![dohq-artifactory code quality](https://api.codacy.com/project/badge/Grade/ce32469db9d948bcb56d50532e0c0005)](https://www.codacy.com/app/tim55667757/artifactory/dashboard) [![dohq-artifactory on PyPI](https://img.shields.io/pypi/v/dohq-artifactory.svg)](https://pypi.python.org/pypi/dohq-artifactory) [![dohq-artifactory license](https://img.shields.io/pypi/l/dohq-artifactory.svg)](https://github.com/devopshq/artifactory/blob/master/LICENSE)
 
 This module is intended to serve as a logical descendant of [pathlib](https://docs.python.org/3/library/pathlib.html), a Python 3 module for object-oriented path manipulations. As such, it implements everything as closely as possible to the origin with few exceptions, such as stat().
 
@@ -280,12 +280,25 @@ path.deploy_file(
 )
 ```
 
-Deploy a debian package ```myapp-1.0.deb```
+Deploy a debian package ```myapp-1.0.deb``` to an ```existent``` folder
 
 ```python
 from artifactory import ArtifactoryPath
 
-path = ArtifactoryPath("http://my-artifactory/artifactory/ubuntu-local/pool")
+path = ArtifactoryPath("http://my-artifactory/artifactory/ubuntu-local/pool/")
+path.deploy_deb(
+    "./myapp-1.0.deb", distribution="trusty", component="main", architecture="amd64"
+)
+```
+
+Deploy a debian package ```myapp-1.0.deb``` to a ```non-existent``` folder
+
+```python
+from artifactory import ArtifactoryPath
+
+path = ArtifactoryPath(
+    "http://my-artifactory/artifactory/ubuntu-local/pool/myapp-1.0.deb"
+)
 path.deploy_deb(
     "./myapp-1.0.deb", distribution="trusty", component="main", architecture="amd64"
 )
@@ -323,14 +336,14 @@ is placed in the destination repo.
 
 source.copy(dest)
 for p in dest:
-    print (p)
+    print(p)
 # http://example.com/artifactory/published/production/foo-0.0.1.gz
 # http://example.com/artifactory/published/production/foo-0.0.1.pom
 
 for p in ArtifactoryPath(
     "http://example.com/artifactory/published/product/product/1.0.0.tar"
 ):
-    print p
+    print(p)
 # http://example.com/artifactory/published/product/product/1.0.0/product-1.0.0.tar.gz
 # http://example.com/artifactory/published/product/product/1.0.0/product-1.0.0.tar.pom
 
@@ -341,7 +354,7 @@ directly inside our dest as we intended.
 
 source.copy(dest, suppress_layouts=True)
 for p in dest:
-    print (p)
+    print(p)
 """
 http://example.com/artifactory/published/production/foo-0.0.1.gz
 http://example.com/artifactory/published/production/foo-0.0.1.pom
