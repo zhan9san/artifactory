@@ -988,6 +988,7 @@ class _ArtifactoryAccessor(pathlib._Accessor):
         parameters=None,
         explode_archive=None,
         explode_archive_atomic=None,
+        by_checksum=None,
     ):
         """
         Uploads a given file-like object
@@ -1013,6 +1014,8 @@ class _ArtifactoryAccessor(pathlib._Accessor):
             headers["X-Explode-Archive"] = "true"
         if explode_archive_atomic:
             headers["X-Explode-Archive-Atomic"] = "true"
+        if by_checksum:
+            headers["X-Checksum-Deploy"] = "true"
 
         text, code = self.rest_put_stream(
             url,
@@ -1676,6 +1679,7 @@ class ArtifactoryPath(pathlib.Path, PureArtifactoryPath):
         parameters={},
         explode_archive=None,
         explode_archive_atomic=None,
+        by_checksum=None,
     ):
         """
         Upload the given file object to this path
@@ -1689,6 +1693,7 @@ class ArtifactoryPath(pathlib.Path, PureArtifactoryPath):
             parameters=parameters,
             explode_archive=explode_archive,
             explode_archive_atomic=explode_archive_atomic,
+            by_checksum=by_checksum,
         )
 
     def deploy_file(
@@ -1700,6 +1705,7 @@ class ArtifactoryPath(pathlib.Path, PureArtifactoryPath):
         parameters={},
         explode_archive=False,
         explode_archive_atomic=False,
+        by_checksum=False,
     ):
         """
         Upload the given file to this path
@@ -1722,6 +1728,7 @@ class ArtifactoryPath(pathlib.Path, PureArtifactoryPath):
                 parameters=parameters,
                 explode_archive=explode_archive,
                 explode_archive_atomic=explode_archive_atomic,
+                by_checksum=by_checksum,
             )
 
     def deploy_deb(
